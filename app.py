@@ -3,6 +3,7 @@ import google.generativeai as genai
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+import sys
 
 # --- Firebase Admin Imports ---
 import firebase_admin
@@ -10,7 +11,7 @@ from firebase_admin import credentials, messaging
 
 # --- PostgreSQL Import ---
 import psycopg2
-import sys
+from psycopg2 import extras  # For dictionary cursor
 
 # Load environment variables from .env file
 load_dotenv()
@@ -19,11 +20,23 @@ app = Flask(__name__)
 CORS(app)  # Allow cross-origin requests
 
 # --- CRITICAL SECURITY FIX ---
-# NEVER hardcode API keys. Always use environment variables.
-# I have removed your exposed key.
+# Load ALL secrets from environment variables
 GEMINI_API_KEY = 'AIzaSyCR3hEwynBgrMH-mcLvn4DuaGC1R_Y9_A8' # os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY environment variable not set.")
+
+FIREBASE_SDK_PATH = os.getenv("FIREBASE_SDK_PATH", 'serviceAccountKey.json')
+
+# --- PostgreSQL Connection Details ---
+DB_NAME = 'nyay_mitra_database'
+DB_USER = 'nyay_mitra_database_user'
+DB_PASS = 'RtmYkQkavY4UhiaGFy1CMPKqEHTX3Hys'
+DB_HOST = 'dpg-d3u7jrn5r7bs73fagskg-a.singapore-postgres.render.com'
+DB_PORT = '5432'
+
+if not all([DB_NAME, DB_USER, DB_PASS, DB_HOST]):
+    print("Database environment variables are not fully set.", file=sys.stderr)
+# -----------------------------------
 
 genai.configure(api_key=GEMINI_API_KEY)
 
@@ -40,17 +53,15 @@ SYSTEM_INSTRUCTION = (
 )
 
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash-preview-09-2025",
+    model_name="gemini-1.5-flash-latest", # Updated to a more current model
     system_instruction=SYSTEM_INSTRUCTION
 )
 # ----------------------------------
 
 # --- Firebase Admin SDK Initialization ---
 try:
-    # Get the path to your service account key from .env
-    FIREBASE_SDK_PATH = 'serviceAccountKey.json'
-    if not FIREBASE_SDK_PATH:
-        print("FIREBASE_ADMIN_SDK_PATH environment variable not set. FCM will not work.", file=sys.stderr)
+    if not os.path.exists(FIREBASE_SDK_PATH):
+        print(f"Firebase service account key not found at: {FIREBASE_SDK_PATH}", file=sys.stderr)
     else:
         cred = credentials.Certificate(FIREBASE_SDK_PATH)
         firebase_admin.initialize_app(cred)
@@ -58,14 +69,6 @@ try:
 except Exception as e:
     print(f"Error initializing Firebase Admin SDK: {e}", file=sys.stderr)
 # ---------------------------------------
-
-# --- PostgreSQL Connection Details ---
-# Load from environment variables.
-DB_NAME = 'nyay_mitra_database'
-DB_USER = 'nyay_mitra_database_user'
-DB_PASS = 'RtmYkQkavY4UhiaGFy1CMPKqEHTX3Hys'
-DB_HOST = 'dpg-d3u7jrn5r7bs73fagskg-a.singapore-postgres.render.com'
-DB_PORT = '5432'
 
 def get_db_connection():
     """Establishes a new connection to the PostgreSQL database."""
@@ -108,7 +111,7 @@ def chat():
         print(f"Error in /api/chat: {e}", file=sys.stderr)
         return jsonify({"error": str(e)}), 500
 
-# --- NEW: FCM Helper Function ---
+# --- FCM Helper Function ---
 def send_fcm_message(token, title, body):
     """Sends a single FCM message to a specific device token."""
     try:
@@ -127,7 +130,7 @@ def send_fcm_message(token, title, body):
         return False, str(e)
 # --------------------------------
 
-# --- NEW: Send Notification Endpoint ---
+# --- Send Notification Endpoint (Existing) ---
 @app.route("/api/send-notification", methods=["POST"])
 def send_notification():
     try:
@@ -141,7 +144,6 @@ def send_notification():
         if not user_email or not message_body:
             return jsonify({"error": "Missing 'email' or 'body'"}), 400
 
-        # 1. Get database connection
         conn = get_db_connection()
         if not conn:
             return jsonify({"error": "Failed to connect to the database"}), 500
@@ -149,8 +151,7 @@ def send_notification():
         token = None
         try:
             with conn.cursor() as cursor:
-                # 2. Fetch the FCM token for the user
-                #    Update 'users' and 'fcm_token' to match your table names
+                # This query relies on the 'users' table you created
                 cursor.execute(
                     "SELECT fcm_token FROM users WHERE email = %s", 
                     (user_email,)
@@ -166,14 +167,12 @@ def send_notification():
         finally:
             conn.close() # Always close the connection
 
-        # 3. Check if token was found
         if not token:
             return jsonify({"error": "User not found or no FCM token on file"}), 404
 
-        # 4. Send the message
         success, fcm_response = send_fcm_message(
             token=token,
-            title="New Message from Nyay Mitra", # You can customize this
+            title="New Message from Nyay Mitra",
             body=message_body
         )
 
@@ -186,6 +185,86 @@ def send_notification():
         print(f"Error in /api/send-notification: {e}", file=sys.stderr)
         return jsonify({"error": str(e)}), 500
 # -------------------------------------
+
+
+# ===================================================================
+# --- NEW: User Login / Registration Endpoint ---
+# ===================================================================
+@app.route("/api/user/login-or-register", methods=["POST"])
+def login_or_register_user():
+    try:
+        data = request.json
+        if not data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        email = data.get("email")
+        fcm_token = data.get("fcm_token")
+        
+        # Email and FCM token are always required
+        if not email or not fcm_token:
+            return jsonify({"error": "Missing 'email' or 'fcm_token'"}), 400
+
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({"error": "Failed to connect to the database"}), 500
+
+        try:
+            # Use a dictionary cursor to get results by column name
+            with conn.cursor(cursor_factory=extras.DictCursor) as cursor:
+                
+                # 1. Check if user exists
+                cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+                user = cursor.fetchone()
+
+                if user:
+                    # --- EXISTING USER ---
+                    # Update their FCM token in case it changed
+                    cursor.execute(
+                        "UPDATE users SET fcm_token = %s WHERE email = %s",
+                        (fcm_token, email)
+                    )
+                    conn.commit()
+                    
+                    user_role = user["role"]
+                    return jsonify({
+                        "status": "success",
+                        "isNewUser": False,
+                        "role": user_role,
+                        "message": f"Welcome back! You are registered as a {user_role}."
+                    }), 200
+
+                else:
+                    # --- NEW USER ---
+                    role = data.get("role") # Role is required for new users
+                    if not role:
+                        return jsonify({"error": "Missing 'role' for new user"}), 400
+
+                    # Insert new user record
+                    cursor.execute(
+                        "INSERT INTO users (email, role, fcm_token) VALUES (%s, %s, %s)",
+                        (email, role, fcm_token)
+                    )
+                    conn.commit()
+                    
+                    return jsonify({
+                        "status": "success",
+                        "isNewUser": True,
+                        "role": role,
+                        "message": f"Welcome! You are registered as a {role}."
+                    }), 201 # 201 Created
+
+        except (Exception, psycopg2.Error) as e:
+            conn.rollback() # Roll back any failed database changes
+            print(f"Database error in /login-or-register: {e}", file=sys.stderr)
+            return jsonify({"error": f"Database error: {e}"}), 500
+        finally:
+            conn.close()
+
+    except Exception as e:
+        print(f"Error in /api/user/login-or-register: {e}", file=sys.stderr)
+        return jsonify({"error": str(e)}), 500
+# -------------------------------------------------------------------
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=True)
