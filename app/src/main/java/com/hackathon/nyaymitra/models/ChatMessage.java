@@ -9,7 +9,7 @@ public class ChatMessage {
         this.isUser = isUser;
     }
 
-    public String getMessage() {
+    public String getText() {
         return message;
     }
 

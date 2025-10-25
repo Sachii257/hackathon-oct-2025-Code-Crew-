@@ -1,4 +1,5 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Nyay Mitra</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,7 +10,8 @@
     <br>
     <br>
     <b>1️⃣ Fundamental Rights (Litigation Angle)</b><br>
-    &#160;&#160;&#160;&#160;• Strategic writ application under Articles 32 &amp; 226<br> &#160;&#160;&#160;&#160;• Cited case laws (basic references)<br>
+    &#160;&#160;&#160;&#160;• Strategic writ application under Articles 32 &amp; 226<br>
+    &#160;&#160;&#160;&#160;• Cited case laws (basic references)<br>
     &#160;&#160;&#160;&#160;• Grounds for PIL filing<br><br>
 
     <b>2️⃣ Duties of Citizens (Advisory Angle)</b><br>
@@ -26,7 +28,8 @@
     &#160;&#160;&#160;&#160;• Constructive dismissal argument<br>
     &#160;&#160;&#160;&#160;• Service rule breach remedies<br><br>
 
-    <b>5️⃣ Women &amp; Child Law (Case Building)</b><br> &#160;&#160;&#160;&#160;• <i><b>Important sections:</b></i> IPC 498A, POCSO 7/8<br>
+    <b>5️⃣ Women &amp; Child Law (Case Building)</b><br>
+    &#160;&#160;&#160;&#160;• <i><b>Important sections:</b></i> IPC 498A, POCSO 7/8<br>
     &#160;&#160;&#160;&#160;• Evidence hierarchy: medical first, statements next<br><br>
 
     <b>6️⃣ Real Estate Law (Litigation Opportunities)</b><br>
@@ -49,7 +52,8 @@
     &#160;&#160;&#160;&#160;• Managing cause lists<br>
     &#160;&#160;&#160;&#160;• Adjournment resistance tactics<br><br>
 
-    <b>🔟 Wills &amp; Succession (Advisory)</b><br> &#160;&#160;&#160;&#160;• Probate petition drafting<br>
+    <b>🔟 Wills &amp; Succession (Advisory)</b><br>
+    &#160;&#160;&#160;&#160;• Probate petition drafting<br>
     &#160;&#160;&#160;&#160;• Mutation follow-ups<br>
     &#160;&#160;&#160;&#160;• Handwritten will risks<br><br>
 
@@ -72,7 +76,8 @@
     &#160;&#160;&#160;&#160;• Calculating multiplier<br>
     &#160;&#160;&#160;&#160;• <i><b>Evidence priorities:</b></i> MLC, Site sketch, Eyewitnesses<br><br>
 
-    <b>1️⃣5️⃣ Banking &amp; Finance (Negotiation)</b><br> &#160;&#160;&#160;&#160;• SARFAESI strategies<br>
+    <b>1️⃣5️⃣ Banking &amp; Finance (Negotiation)</b><br>
+    &#160;&#160;&#160;&#160;• SARFAESI strategies<br>
     &#160;&#160;&#160;&#160;• Pre-litigation notice draft points<br>
     &#160;&#160;&#160;&#160;• Settlement negotiation structure<br><br>
 
@@ -129,26 +134,34 @@
     <b>2️⃣ Duties of Citizens</b><br>
     &#160;&#160;&#160;&#160;• Respect law, environment, national integrity<br>
     &#160;&#160;&#160;&#160;• How duties protect community<br>
-    &#160;&#160;&#160;&#160;• Example: Fines for public nuisance &amp; spitting.<br><br> <b>3️⃣ Consumer Rights</b><br>
+    &#160;&#160;&#160;&#160;• Example: Fines for public nuisance &amp; spitting.<br><br>
+
+    <b>3️⃣ Consumer Rights</b><br>
     &#160;&#160;&#160;&#160;• Refund / replace / compensation rights<br>
     &#160;&#160;&#160;&#160;• How to file complaint on consumerhelpline.gov.in<br>
     &#160;&#160;&#160;&#160;• Warranty terms to check<br>
-    &#160;&#160;&#160;&#160;• <i><b>Evidence Tip:</b> Save bills &amp; chat screenshots.</i><br><br> <b>4️⃣ Workplace &amp; Employment</b><br> &#160;&#160;&#160;&#160;• Minimum wages<br>
+    &#160;&#160;&#160;&#160;• <i><b>Evidence Tip:</b> Save bills &amp; chat screenshots.</i><br><br>
+
+    <b>4️⃣ Workplace &amp; Employment</b><br>
+    &#160;&#160;&#160;&#160;• Minimum wages<br>
     &#160;&#160;&#160;&#160;• Harassment complaint process<br>
     &#160;&#160;&#160;&#160;• Wrongful termination steps<br>
     &#160;&#160;&#160;&#160;• <i><b>Safety Tip:</b> Never sign resignation under pressure.</i><br><br>
 
-    <b>5️⃣ Women &amp; Child Protection</b><br> &#160;&#160;&#160;&#160;• Quick overview of POCSO, DV Act<br>
+    <b>5️⃣ Women &amp; Child Protection</b><br>
+    &#160;&#160;&#160;&#160;• Quick overview of POCSO, DV Act<br>
     &#160;&#160;&#160;&#160;• Police approach procedure<br>
     &#160;&#160;&#160;&#160;• Emergency helpline numbers<br>
     &#160;&#160;&#160;&#160;• <i><b>Protection Tip:</b> Record threats safely.</i><br><br>
 
-    <b>6️⃣ Property &amp; Real Estate</b><br> &#160;&#160;&#160;&#160;• Title verification basics<br>
+    <b>6️⃣ Property &amp; Real Estate</b><br>
+    &#160;&#160;&#160;&#160;• Title verification basics<br>
     &#160;&#160;&#160;&#160;• Tenant evictions require notice<br>
     &#160;&#160;&#160;&#160;• Builder fraud warning signs<br>
     &#160;&#160;&#160;&#160;• <i><b>Tip:</b> Avoid cash transactions.</i><br><br>
 
-    <b>7️⃣ Family &amp; Matrimonial</b><br> &#160;&#160;&#160;&#160;• Basic divorce timelines<br>
+    <b>7️⃣ Family &amp; Matrimonial</b><br>
+    &#160;&#160;&#160;&#160;• Basic divorce timelines<br>
     &#160;&#160;&#160;&#160;• Child custody “best interest” rule<br>
     &#160;&#160;&#160;&#160;• Dowry harassment helpline<br><br>
 
@@ -163,7 +176,8 @@
     &#160;&#160;&#160;&#160;• Summons meaning<br>
     &#160;&#160;&#160;&#160;• Case tracking portals<br><br>
 
-    <b>🔟 Wills &amp; Inheritance</b><br> &#160;&#160;&#160;&#160;• Why will should be registered<br>
+    <b>🔟 Wills &amp; Inheritance</b><br>
+    &#160;&#160;&#160;&#160;• Why will should be registered<br>
     &#160;&#160;&#160;&#160;• Legal heirs priority<br>
     &#160;&#160;&#160;&#160;• Property share disputes<br><br>
 
@@ -174,7 +188,8 @@
 
     <b>1️⃣2️⃣ Cyber Laws</b><br>
     &#160;&#160;&#160;&#160;• Fraud reporting portals<br>
-    &#160;&#160;&#160;&#160;• Password &amp; OTP safety<br> &#160;&#160;&#160;&#160;• Refund chances in scams<br><br>
+    &#160;&#160;&#160;&#160;• Password &amp; OTP safety<br>
+    &#160;&#160;&#160;&#160;• Refund chances in scams<br><br>
 
     <b>1️⃣3️⃣ RTI</b><br>
     &#160;&#160;&#160;&#160;• How to ask targeted questions<br>
@@ -186,7 +201,8 @@
     &#160;&#160;&#160;&#160;• Drunk driving consequences<br>
     &#160;&#160;&#160;&#160;• Accident claim must-haves<br><br>
 
-    <b>1️⃣5️⃣ Banking &amp; Loans</b><br> &#160;&#160;&#160;&#160;• EMI default outcomes<br>
+    <b>1️⃣5️⃣ Banking &amp; Loans</b><br>
+    &#160;&#160;&#160;&#160;• EMI default outcomes<br>
     &#160;&#160;&#160;&#160;• Legal rights against harassment<br>
     &#160;&#160;&#160;&#160;• Insurance claim documentation<br><br>
 
@@ -244,7 +260,8 @@
         <item>📢 AI-driven legal chat feature added to Nyay Mitra.</item>
         <item>📢 Guidelines issued for digital signatures on legal documents.</item>
         <item>📢 High Court allows online submission of tenancy disputes.</item>
-        <item>📢 Health &amp; Medical Law: Hospitals must share patient records on request.</item> <item>📢 Supreme Court upholds right to appeal for cyber harassment victims.</item>
+        <item>📢 Health &amp; Medical Law: Hospitals must share patient records on request.</item>
+        <item>📢 Supreme Court upholds right to appeal for cyber harassment victims.</item>
         <item>📢 Free workshops on understanding legal rights available in your city.</item>
         <item>📢 Nyay Mitra app now supports multilingual document translation.</item>
     </string-array>

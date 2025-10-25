@@ -74,7 +74,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void bind(ChatMessage message) {
-            tvUserMessage.setText(message.getMessage());
+            // Kept the version from 'main' which uses getText()
+            tvUserMessage.setText(message.getText());
         }
     }
 
@@ -89,7 +90,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void bind(ChatMessage message) {
-            tvAiMessage.setText(message.getMessage());
+            // Kept the version from 'main' which uses getText()
+            tvAiMessage.setText(message.getText());
         }
     }
 }

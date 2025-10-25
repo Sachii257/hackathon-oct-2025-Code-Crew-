@@ -1,16 +1,16 @@
 plugins {
-    // This assumes you have 'alias(libs.plugins.android.application)' defined in your settings.gradle or gradle/libs.versions.toml
     alias(libs.plugins.android.application)
+    id 'com.google.gms.google-services' // <-- ADD THIS LINE
 }
 
 android {
-    namespace 'com.hackathon.nyaymitra' // Correct namespace
-    compileSdk 36 // Target the latest SDK (adjust if needed based on Android Studio)
+    namespace 'com.hackathon.nyaymitra'
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.hackathon.nyaymitra"
-        minSdk 24 // Minimum supported Android version
-        targetSdk 36 // Target the same SDK as compileSdk
+        minSdk 24
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -19,23 +19,23 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false // Disable shrinking/obfuscation for now
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        // Use Java 1.8 for broader compatibility, especially if Gemini SDK or other libs require it
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-    // buildFeatures { viewBinding true } // Uncomment if you decide to use View Binding
 }
 
 dependencies {
-
     // Default AndroidX Libraries (using aliases if defined in libs.versions.toml)
     implementation libs.appcompat
-    implementation libs.material // Ensure this alias points to com.google.android.material:material
+    implementation libs.material
+    implementation libs.firebase.auth
+    implementation libs.firebase.messaging
+// Ensure this alias points to com.google.android.material:material
     // implementation libs.constraintlayout // Add if you use ConstraintLayout
     // implementation libs.activity // Add if needed
     // implementation libs.fragment // Add if needed
@@ -79,5 +79,5 @@ dependencies {
 
     // Gson (For storing notification list in SharedPreferences)
     implementation 'com.google.code.gson:gson:2.10.1' // Use latest stable version
-
+    implementation 'com.google.android.gms:play-services-auth:21.2.0'
 }

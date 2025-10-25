@@ -4,16 +4,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast; // Import Toast for click feedback
+import android.widget.Toast; // Kept Toast import for click feedback
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hackathon.nyaymitra.R;
+// Keep explicit import from main
 import com.hackathon.nyaymitra.models.NewsItem;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    private List<NewsItem> newsList;
+    // Keep list declaration (functionally identical)
+    private static List<NewsItem> newsList;
 
     public NewsAdapter(List<NewsItem> newsList) {
         this.newsList = newsList;
@@ -30,7 +32,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         NewsItem newsItem = newsList.get(position);
-        holder.bind(newsItem);
+        // Kept direct text setting from main (consistent with NewsItem model)
+        holder.tvTitle.setText(newsItem.getTitle());
+        holder.tvSnippet.setText(newsItem.getSnippet());
     }
 
     @Override
@@ -38,36 +42,30 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         return newsList.size();
     }
 
+    // --- ViewHolder ---
+    // Keep structure from main (includes tvSnippet)
     static class NewsViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle;
-        // Snippet TextView removed
+        TextView tvSnippet;
 
         NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tv_news_title);
-            // tvSnippet = itemView.findViewById(R.id.tv_news_snippet); // Removed
-        }
+            tvSnippet = itemView.findViewById(R.id.tv_news_snippet);
 
-        void bind(NewsItem newsItem) {
-            tvTitle.setText(newsItem.getHeadline());
-            // tvSnippet.setText(newsItem.getSnippet()); // Removed
-
-            // --- IMPORTANT: Activate Marquee ---
-            // The TextView needs to be selected for marquee to start
-            tvTitle.setSelected(true);
-            // ------------------------------------
-
-            // --- Handle Item Click ---
+            // --- Merged Item Click Listener from HEAD ---
             itemView.setOnClickListener(v -> {
-                // TODO: Replace Toast with opening a link (Intent with ACTION_VIEW)
-                // if (newsItem.getUrl() != null && !newsItem.getUrl().isEmpty()) {
-                //     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(newsItem.getUrl()));
-                //     itemView.getContext().startActivity(browserIntent);
-                // } else {
-                //     Toast.makeText(itemView.getContext(), "No link available for this item.", Toast.LENGTH_SHORT).show();
-                // }
-                Toast.makeText(itemView.getContext(), "Clicked: " + newsItem.getHeadline(), Toast.LENGTH_SHORT).show();
+                int position = getAbsoluteAdapterPosition(); // Get the clicked item's position safely
+                if (position != RecyclerView.NO_POSITION) {
+                    NewsItem clickedItem = newsList.get(position);
+                    // TODO: Replace Toast with opening a link or detail activity
+                    // if (clickedItem.getUrl() != null && !clickedItem.getUrl().isEmpty()) { ... }
+                    Toast.makeText(itemView.getContext(), "Clicked: " + clickedItem.getTitle(), Toast.LENGTH_SHORT).show();
+                }
             });
+            // ------------------------------------------
         }
+
+        // Removed bind method from HEAD as onBindViewHolder handles setting text directly
     }
 }

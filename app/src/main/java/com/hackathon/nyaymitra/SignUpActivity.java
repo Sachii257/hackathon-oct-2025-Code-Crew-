@@ -2,58 +2,225 @@ package com.hackathon.nyaymitra;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText etSignUpEmail, etSignUpPassword, etConfirmPassword;
     private Button btnSignUp;
     private TextView tvToggleToSignIn;
-    // You'll also need to initialize your RadioGroup:
-    // private RadioGroup rgSignUpRole;
+    private RadioGroup rgSignUpRole; // Keep the RadioGroup
+
+    private FirebaseAuth mAuth; // Keep FirebaseAuth
+
+    // --- Executor and Handler for background tasks ---
+    private final ExecutorService executor = Executors.newSingleThreadExecutor(); // Keep Executor
+    private final Handler handler = new Handler(Looper.getMainLooper()); // Keep Handler
+
+    private static final String TAG = "SignUpActivity";
+    // --- SET YOUR FLASK URL HERE ---
+    // Make sure this URL is correct (using ngrok or your IP)
+    private static final String BACKEND_URL = "https://a0b4be4631c8.ngrok-free.app/api/user/login-or-register"; // Keep URL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        // Keep all findViewById calls from main
         etSignUpEmail = findViewById(R.id.etSignUpEmail);
         etSignUpPassword = findViewById(R.id.etSignUpPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         btnSignUp = findViewById(R.id.btnSignUp);
         tvToggleToSignIn = findViewById(R.id.tvToggleToSignIn);
-        // rgSignUpRole = findViewById(R.id.rgSignUpRole);
+        rgSignUpRole = findViewById(R.id.rgSignUpRole);
 
-        // Click listener for the "Sign Up" button
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Add validation logic for sign up
-                // (e.g., check if passwords match, email is valid, etc.)
+        mAuth = FirebaseAuth.getInstance(); // Keep FirebaseAuth initialization
 
-                // For now, just show a message
-                Toast.makeText(SignUpActivity.this, "Sign Up Clicked (Mock)", Toast.LENGTH_SHORT).show();
+        // Keep the click listeners from main
+        btnSignUp.setOnClickListener(v -> validateAndSignUp());
+        tvToggleToSignIn.setOnClickListener(v -> finish());
+    }
 
-                // After successful sign up, you might go to Login or Main
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish(); // Close this activity
+    // Keep the entire validateAndSignUp method from main
+    private void validateAndSignUp() {
+        String email = etSignUpEmail.getText().toString().trim();
+        String password = etSignUpPassword.getText().toString().trim();
+        String confirmPassword = etConfirmPassword.getText().toString().trim();
+        int selectedRoleId = rgSignUpRole.getCheckedRadioButtonId();
+
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etSignUpEmail.setError("Please enter a valid email");
+            return;
+        }
+        if (password.isEmpty() || password.length() < 6) {
+            etSignUpPassword.setError("Password must be at least 6 characters");
+            return;
+        }
+        if (!password.equals(confirmPassword)) {
+            etConfirmPassword.setError("Passwords do not match");
+            return;
+        }
+        if (selectedRoleId == -1) {
+            Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Assuming you have IDs R.id.rbLawyer and R.id.rbClient in your XML
+        String selectedRole = (selectedRoleId == R.id.rbLawyer) ? "lawyer" : "client";
+
+        // Create user in Firebase
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        registerUserInBackend(user, selectedRole);
+                    } else {
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(SignUpActivity.this, "Authentication failed: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    // Keep the entire registerUserInBackend method from main
+    private void registerUserInBackend(FirebaseUser user, String role) {
+        if (user == null) return;
+        String email = user.getEmail();
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(tokenTask -> {
+            if (!tokenTask.isSuccessful()) {
+                Log.w(TAG, "Fetching FCM registration token failed", tokenTask.getException());
+                postToast("Failed to get device token. Cannot register.");
+                return;
             }
-        });
+            String fcmToken = tokenTask.getResult();
 
-        // Click listener to go back to "Sign In"
-        tvToggleToSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Go back to LoginActivity
-                finish(); // Just close this activity to return to the previous one
-            }
+            // Run network call on background thread
+            executor.execute(() -> {
+                HttpURLConnection connection = null;
+                boolean registrationSuccess = false;
+                String responseMessage = "Server registration failed. Please try again.";
+
+                try {
+                    JSONObject payload = new JSONObject();
+                    payload.put("email", email);
+                    payload.put("fcm_token", fcmToken);
+                    payload.put("role", role);
+                    String jsonPayload = payload.toString();
+
+                    URL url = new URL(BACKEND_URL);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/json; utf-8");
+                    // Add the ngrok header
+                    connection.setRequestProperty("ngrok-skip-browser-warning", "true");
+                    connection.setDoOutput(true);
+                    connection.setConnectTimeout(15000); // Increased timeout
+                    connection.setReadTimeout(15000); // Increased timeout
+
+
+                    try (OutputStream os = connection.getOutputStream()) {
+                        os.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
+                    }
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
+                        registrationSuccess = true;
+                        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                            // Read the full response
+                            StringBuilder response = new StringBuilder();
+                            String responseLine;
+                            while ((responseLine = br.readLine()) != null) {
+                                response.append(responseLine.trim());
+                            }
+                            JSONObject jsonResponse = new JSONObject(response.toString());
+                            responseMessage = jsonResponse.getString("message");
+                        }
+                    } else {
+                        Log.e(TAG, "Backend Error: " + responseCode);
+                        // Optional: Read error stream for more details
+                        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
+                            StringBuilder errorResponse = new StringBuilder();
+                            String errorLine;
+                            while ((errorLine = br.readLine()) != null) {
+                                errorResponse.append(errorLine.trim());
+                            }
+                            Log.e(TAG, "Error Response Body: " + errorResponse.toString());
+                        } catch (Exception readEx) {
+                            Log.e(TAG, "Error reading error stream", readEx);
+                        }
+                    }
+
+                } catch (Exception e) {
+                    Log.e(TAG, "HttpURLConnection Failure: " + e.getMessage(), e); // Log the full exception
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+
+                    // Post UI updates back to the main thread
+                    postToast(responseMessage);
+                    if (registrationSuccess) {
+                        navigateToLogin();
+                    } else {
+                        // Delete the Firebase user if backend failed
+                        if (user != null) {
+                            user.delete().addOnCompleteListener(deleteTask -> {
+                                if (deleteTask.isSuccessful()) {
+                                    Log.d(TAG, "Firebase user deleted after backend failure.");
+                                } else {
+                                    Log.w(TAG, "Failed to delete Firebase user after backend failure.", deleteTask.getException());
+                                }
+                            });
+                        }
+                    }
+                }
+            });
         });
+    }
+
+    // Keep the navigateToLogin method from main
+    private void navigateToLogin() {
+        handler.post(() -> {
+            Toast.makeText(this, "Registration successful! Please sign in.", Toast.LENGTH_LONG).show();
+            mAuth.signOut();
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    // Keep the postToast method from main
+    private void postToast(String message) {
+        handler.post(() -> Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show());
     }
 }

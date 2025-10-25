@@ -15,6 +15,7 @@
         android:layout_height="70dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher_round"
+        android:contentDescription="App Icon / Profile Picture"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
         app:strokeColor="@android:color/white"
         app:strokeWidth="1dp" />

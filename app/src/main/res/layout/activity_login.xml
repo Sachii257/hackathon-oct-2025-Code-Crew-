@@ -100,6 +100,33 @@
         android:padding="12dp"
         android:layout_marginTop="16dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OR"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@android:color/white"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btnGoogleSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
     <TextView
         android:id="@+id/tvToggle"
         android:layout_width="wrap_content"

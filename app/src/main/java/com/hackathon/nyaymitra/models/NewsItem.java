@@ -1,17 +1,21 @@
 package com.hackathon.nyaymitra.models;
 
 public class NewsItem {
-    private String headline;
-    // Optional: Add a String url if you have actual links
+    // Kept title and snippet from main
+    private String title;
+    private String snippet;
 
-    public NewsItem(String headline /*, String url */) {
-        this.headline = headline;
-        // this.url = url;
+    public NewsItem(String title, String snippet) {
+        this.title = title;
+        this.snippet = snippet;
     }
 
-    public String getHeadline() {
-        return headline;
+    // Kept getters from main
+    public String getTitle() {
+        return title;
     }
 
-    // public String getUrl() { return url; }
+    public String getSnippet() {
+        return snippet;
+    }
 }
