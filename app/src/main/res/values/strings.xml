@@ -1,0 +1,329 @@
+<resources>
+    <string name="app_name">Nyay Mitra</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="lawyer_content">
+<![CDATA[
+    <br>
+    <br>
+    <br>
+    <b>1️⃣ Fundamental Rights (Litigation Angle)</b><br>
+    &#160;&#160;&#160;&#160;• Strategic writ application under Articles 32 &amp; 226<br> &#160;&#160;&#160;&#160;• Cited case laws (basic references)<br>
+    &#160;&#160;&#160;&#160;• Grounds for PIL filing<br><br>
+
+    <b>2️⃣ Duties of Citizens (Advisory Angle)</b><br>
+    &#160;&#160;&#160;&#160;• Explain civic duty breaches during advisory<br>
+    &#160;&#160;&#160;&#160;• Preventive compliance counseling<br><br>
+
+    <b>3️⃣ Consumer Law (Advocacy Core)</b><br>
+    &#160;&#160;&#160;&#160;• Drafting strong complaints<br>
+    &#160;&#160;&#160;&#160;• Compensation calculation methods<br>
+    &#160;&#160;&#160;&#160;• How to prove misleading advertisements<br><br>
+
+    <b>4️⃣ Employment Law (Litigator View)</b><br>
+    &#160;&#160;&#160;&#160;• POSH committee formation defects<br>
+    &#160;&#160;&#160;&#160;• Constructive dismissal argument<br>
+    &#160;&#160;&#160;&#160;• Service rule breach remedies<br><br>
+
+    <b>5️⃣ Women &amp; Child Law (Case Building)</b><br> &#160;&#160;&#160;&#160;• <i><b>Important sections:</b></i> IPC 498A, POCSO 7/8<br>
+    &#160;&#160;&#160;&#160;• Evidence hierarchy: medical first, statements next<br><br>
+
+    <b>6️⃣ Real Estate Law (Litigation Opportunities)</b><br>
+    &#160;&#160;&#160;&#160;• Builder delay remedies under RERA<br>
+    &#160;&#160;&#160;&#160;• Injunction strategy<br>
+    &#160;&#160;&#160;&#160;• Revenue record cross-checking<br><br>
+
+    <b>7️⃣ Family Law (Client Handling)</b><br>
+    &#160;&#160;&#160;&#160;• Counseling to reduce litigation time<br>
+    &#160;&#160;&#160;&#160;• Custody strategy (welfare vs rights)<br>
+    &#160;&#160;&#160;&#160;• Maintenance calculation logic<br><br>
+
+    <b>8️⃣ Criminal Procedure (Defense Strategy)</b><br>
+    &#160;&#160;&#160;&#160;• Bail drafting techniques<br>
+    &#160;&#160;&#160;&#160;• Section-wise bail grounds (CrPC)<br>
+    &#160;&#160;&#160;&#160;• Arrest memo defects exploitation<br><br>
+
+    <b>9️⃣ Court Procedure (Efficiency Skills)</b><br>
+    &#160;&#160;&#160;&#160;• Drafting concise pleadings<br>
+    &#160;&#160;&#160;&#160;• Managing cause lists<br>
+    &#160;&#160;&#160;&#160;• Adjournment resistance tactics<br><br>
+
+    <b>🔟 Wills &amp; Succession (Advisory)</b><br> &#160;&#160;&#160;&#160;• Probate petition drafting<br>
+    &#160;&#160;&#160;&#160;• Mutation follow-ups<br>
+    &#160;&#160;&#160;&#160;• Handwritten will risks<br><br>
+
+    <b>1️⃣1️⃣ Documentation (Professional Drafting)</b><br>
+    &#160;&#160;&#160;&#160;• Indemnity clause<br>
+    &#160;&#160;&#160;&#160;• Arbitration clause insertion<br>
+    &#160;&#160;&#160;&#160;• Liquidated damages clauses<br><br>
+
+    <b>1️⃣2️⃣ Cyber Law (Digital Evidence)</b><br>
+    &#160;&#160;&#160;&#160;• Chain of custody of screenshots<br>
+    &#160;&#160;&#160;&#160;• Metadata preservation<br>
+    &#160;&#160;&#160;&#160;• Section-wise penalty optimization<br><br>
+
+    <b>1️⃣3️⃣ RTI (Litigation Material)</b><br>
+    &#160;&#160;&#160;&#160;• Using RTI replies as annexures<br>
+    &#160;&#160;&#160;&#160;• Framing “leading questions”<br>
+    &#160;&#160;&#160;&#160;• Escalation to CIC<br><br>
+
+    <b>1️⃣4️⃣ Motor Accident Law (Compensation)</b><br>
+    &#160;&#160;&#160;&#160;• Calculating multiplier<br>
+    &#160;&#160;&#160;&#160;• <i><b>Evidence priorities:</b></i> MLC, Site sketch, Eyewitnesses<br><br>
+
+    <b>1️⃣5️⃣ Banking &amp; Finance (Negotiation)</b><br> &#160;&#160;&#160;&#160;• SARFAESI strategies<br>
+    &#160;&#160;&#160;&#160;• Pre-litigation notice draft points<br>
+    &#160;&#160;&#160;&#160;• Settlement negotiation structure<br><br>
+
+    <b>1️⃣6️⃣ Medical Negligence</b><br>
+    &#160;&#160;&#160;&#160;• Standard of care proof<br>
+    &#160;&#160;&#160;&#160;• Expert testimony sourcing<br>
+    &#160;&#160;&#160;&#160;• Cross-examination hints<br><br>
+
+    <b>1️⃣7️⃣ Environmental PILs</b><br>
+    &#160;&#160;&#160;&#160;• Locus standi<br>
+    &#160;&#160;&#160;&#160;• Interim stay strategies<br>
+    &#160;&#160;&#160;&#160;• Immediate injunction drafting<br><br>
+
+    <b>1️⃣8️⃣ Election Law (Objections)</b><br>
+    &#160;&#160;&#160;&#160;• Form mismatch objections<br>
+    &#160;&#160;&#160;&#160;• Counting-related complaints<br>
+    &#160;&#160;&#160;&#160;• MCC violation drafting<br><br>
+
+    <b>1️⃣9️⃣ Legal Aid (Advocacy)</b><br>
+    &#160;&#160;&#160;&#160;• Eligibility verification<br>
+    &#160;&#160;&#160;&#160;• Remuneration claim process<br>
+    &#160;&#160;&#160;&#160;• Legal literacy promotion tactics<br><br>
+
+    <b>2️⃣0️⃣ Advanced Litigation Strategy</b><br>
+    &#160;&#160;&#160;&#160;• Pre-emptive notice drafting<br>
+    &#160;&#160;&#160;&#160;• Pre-suit mediation exploitation<br>
+    &#160;&#160;&#160;&#160;• Case triaging to avoid weak fights<br><br>
+
+    <b>2️⃣1️⃣ Templates (Professional Level)</b><br>
+    &#160;&#160;&#160;&#160;• Legal notices (detailed clauses)<br>
+    &#160;&#160;&#160;&#160;• Affidavits with annexures<br>
+    &#160;&#160;&#160;&#160;• Writ petitions (structure)<br><br>
+
+    <b>2️⃣2️⃣ Advanced Glossary</b><br>
+    &#160;&#160;&#160;&#160;• <i><b>Term ➜ Practical use ➜ Risk ➜ Evidence needed:</b></i><br>
+    &#160;&#160;&#160;&#160;• Interlocutory Application<br>
+    &#160;&#160;&#160;&#160;• Caveat<br>
+    &#160;&#160;&#160;&#160;• Injunction<br>
+    &#160;&#160;&#160;&#160;• Estoppel<br>
+]]>
+</string>
+
+    <string name="client_content">
+<![CDATA[
+    <br>
+    <br>
+    <br>
+    <b>1️⃣ Fundamental Rights in Daily Life</b><br>
+    &#160;&#160;&#160;&#160;• Simple explanation of Articles 14–32 (equality, speech, protection)<br>
+    &#160;&#160;&#160;&#160;• What to do if denied services (bank, hospital, school)<br>
+    &#160;&#160;&#160;&#160;• Who to complain to<br>
+    &#160;&#160;&#160;&#160;• <i><b>Action Tip:</b> Always take written refusal from authority.</i><br><br>
+
+    <b>2️⃣ Duties of Citizens</b><br>
+    &#160;&#160;&#160;&#160;• Respect law, environment, national integrity<br>
+    &#160;&#160;&#160;&#160;• How duties protect community<br>
+    &#160;&#160;&#160;&#160;• Example: Fines for public nuisance &amp; spitting.<br><br> <b>3️⃣ Consumer Rights</b><br>
+    &#160;&#160;&#160;&#160;• Refund / replace / compensation rights<br>
+    &#160;&#160;&#160;&#160;• How to file complaint on consumerhelpline.gov.in<br>
+    &#160;&#160;&#160;&#160;• Warranty terms to check<br>
+    &#160;&#160;&#160;&#160;• <i><b>Evidence Tip:</b> Save bills &amp; chat screenshots.</i><br><br> <b>4️⃣ Workplace &amp; Employment</b><br> &#160;&#160;&#160;&#160;• Minimum wages<br>
+    &#160;&#160;&#160;&#160;• Harassment complaint process<br>
+    &#160;&#160;&#160;&#160;• Wrongful termination steps<br>
+    &#160;&#160;&#160;&#160;• <i><b>Safety Tip:</b> Never sign resignation under pressure.</i><br><br>
+
+    <b>5️⃣ Women &amp; Child Protection</b><br> &#160;&#160;&#160;&#160;• Quick overview of POCSO, DV Act<br>
+    &#160;&#160;&#160;&#160;• Police approach procedure<br>
+    &#160;&#160;&#160;&#160;• Emergency helpline numbers<br>
+    &#160;&#160;&#160;&#160;• <i><b>Protection Tip:</b> Record threats safely.</i><br><br>
+
+    <b>6️⃣ Property &amp; Real Estate</b><br> &#160;&#160;&#160;&#160;• Title verification basics<br>
+    &#160;&#160;&#160;&#160;• Tenant evictions require notice<br>
+    &#160;&#160;&#160;&#160;• Builder fraud warning signs<br>
+    &#160;&#160;&#160;&#160;• <i><b>Tip:</b> Avoid cash transactions.</i><br><br>
+
+    <b>7️⃣ Family &amp; Matrimonial</b><br> &#160;&#160;&#160;&#160;• Basic divorce timelines<br>
+    &#160;&#160;&#160;&#160;• Child custody “best interest” rule<br>
+    &#160;&#160;&#160;&#160;• Dowry harassment helpline<br><br>
+
+    <b>8️⃣ Criminal Law Basics</b><br>
+    &#160;&#160;&#160;&#160;• What happens after arrest<br>
+    &#160;&#160;&#160;&#160;• Bail types<br>
+    &#160;&#160;&#160;&#160;• False FIR defense<br>
+    &#160;&#160;&#160;&#160;• <i><b>Tip:</b> Ask for arrest memo copy.</i><br><br>
+
+    <b>9️⃣ Court Process Basics</b><br>
+    &#160;&#160;&#160;&#160;• Civil vs criminal difference<br>
+    &#160;&#160;&#160;&#160;• Summons meaning<br>
+    &#160;&#160;&#160;&#160;• Case tracking portals<br><br>
+
+    <b>🔟 Wills &amp; Inheritance</b><br> &#160;&#160;&#160;&#160;• Why will should be registered<br>
+    &#160;&#160;&#160;&#160;• Legal heirs priority<br>
+    &#160;&#160;&#160;&#160;• Property share disputes<br><br>
+
+    <b>1️⃣1️⃣ Legal Documents</b><br>
+    &#160;&#160;&#160;&#160;• Notice → Response → Petition flow<br>
+    &#160;&#160;&#160;&#160;• What is an affidavit<br>
+    &#160;&#160;&#160;&#160;• When stamping/notary are needed<br><br>
+
+    <b>1️⃣2️⃣ Cyber Laws</b><br>
+    &#160;&#160;&#160;&#160;• Fraud reporting portals<br>
+    &#160;&#160;&#160;&#160;• Password &amp; OTP safety<br> &#160;&#160;&#160;&#160;• Refund chances in scams<br><br>
+
+    <b>1️⃣3️⃣ RTI</b><br>
+    &#160;&#160;&#160;&#160;• How to ask targeted questions<br>
+    &#160;&#160;&#160;&#160;• Deadline to expect reply<br>
+    &#160;&#160;&#160;&#160;• Appeals process<br><br>
+
+    <b>1️⃣4️⃣ Traffic Laws</b><br>
+    &#160;&#160;&#160;&#160;• Challan rights<br>
+    &#160;&#160;&#160;&#160;• Drunk driving consequences<br>
+    &#160;&#160;&#160;&#160;• Accident claim must-haves<br><br>
+
+    <b>1️⃣5️⃣ Banking &amp; Loans</b><br> &#160;&#160;&#160;&#160;• EMI default outcomes<br>
+    &#160;&#160;&#160;&#160;• Legal rights against harassment<br>
+    &#160;&#160;&#160;&#160;• Insurance claim documentation<br><br>
+
+    <b>1️⃣6️⃣ Health Laws</b><br>
+    &#160;&#160;&#160;&#160;• Right to second opinion<br>
+    &#160;&#160;&#160;&#160;• Billing transparency<br>
+    &#160;&#160;&#160;&#160;• Hospital negligence complaint<br><br>
+
+    <b>1️⃣7️⃣ Environment Laws</b><br>
+    &#160;&#160;&#160;&#160;• How to complain about loud noise/construction<br>
+    &#160;&#160;&#160;&#160;• Solid waste disposal violations<br><br>
+
+    <b>1️⃣8️⃣ Election Rights</b><br>
+    &#160;&#160;&#160;&#160;• Voting eligibility<br>
+    &#160;&#160;&#160;&#160;• Booth capturing complaint number<br><br>
+
+    <b>1️⃣9️⃣ Free Legal Aid</b><br>
+    &#160;&#160;&#160;&#160;• Who qualifies for free lawyer<br>
+    &#160;&#160;&#160;&#160;• Required documents<br><br>
+
+    <b>2️⃣0️⃣ Smart Legal Strategy</b><br>
+    &#160;&#160;&#160;&#160;• Keep timestamps<br>
+    &#160;&#160;&#160;&#160;• Don’t sign blank papers<br>
+    &#160;&#160;&#160;&#160;• Use templates to avoid costly lawyers<br><br>
+
+    <b>2️⃣1️⃣ Templates (Simplified)</b><br>
+    &#160;&#160;&#160;&#160;• Complaint<br>
+    &#160;&#160;&#160;&#160;• Notice<br>
+    &#160;&#160;&#160;&#160;• Application<br>
+    &#160;&#160;&#160;&#160;• Affidavit<br><br>
+
+    <b>2️⃣2️⃣ Glossary</b><br>
+    &#160;&#160;&#160;&#160;• <i><b>Simple meaning + example:</b></i><br>
+    &#160;&#160;&#160;&#160;• FIR<br>
+    &#160;&#160;&#160;&#160;• Bail<br>
+    &#160;&#160;&#160;&#160;• Warrant<br>
+    &#160;&#160;&#160;&#160;• Summons<br>
+]]>
+</string>
+
+    <string-array name="legal_news_headlines">
+        <item>📢 Supreme Court rules on digital privacy rights for citizens.</item>
+        <item>📢 New Consumer Protection Act amendments take effect from next month.</item>
+        <item>📢 Government launches free legal aid portal for women and children.</item>
+        <item>📢 Delhi High Court issues guidelines for rental property disputes.</item>
+        <item>📢 New cybercrime helpline number launched nationwide.</item>
+        <item>📢 Employment law: Minimum wage revised in 5 states.</item>
+        <item>📢 Online RTI filing now available for all government departments.</item>
+        <item>📢 Supreme Court clarifies rights during police arrest procedures.</item>
+        <item>📢 Legal notice templates added in Nyay Mitra app for instant use.</item>
+        <item>📢 Court rules on fast-track procedure for consumer complaints.</item>
+        <item>📢 New data privacy regulations for mobile apps in India.</item>
+        <item>📢 Child protection laws updated under POCSO Act.</item>
+        <item>📢 Motor Vehicle Act: New fines and traffic rules published.</item>
+        <item>📢 AI-driven legal chat feature added to Nyay Mitra.</item>
+        <item>📢 Guidelines issued for digital signatures on legal documents.</item>
+        <item>📢 High Court allows online submission of tenancy disputes.</item>
+        <item>📢 Health &amp; Medical Law: Hospitals must share patient records on request.</item> <item>📢 Supreme Court upholds right to appeal for cyber harassment victims.</item>
+        <item>📢 Free workshops on understanding legal rights available in your city.</item>
+        <item>📢 Nyay Mitra app now supports multilingual document translation.</item>
+    </string-array>
+    <string-array name="faq_questions">
+        <item>What is Nyay Mitra?</item>
+        <item>How does the document scanning work?</item>
+        <item>What languages does Nyay Mitra support?</item>
+        <item>Is the AI chat like talking to a real lawyer?</item>
+        <item>Can Nyay Mitra draft legal documents for me?</item>
+        <item>How accurate is the legal information?</item>
+        <item>Is my data safe and private?</item>
+        <item>Do I need an internet connection?</item>
+        <item>How much does Nyay Mitra cost?</item>
+        <item>How do I use the Legal Dictionary?</item>
+        <item>Can I upload documents from my phone gallery?</item>
+        <item>What kind of legal documents can I scan?</item>
+        <item>Does the AI understand complex legal terms?</item>
+        <item>Can Nyay Mitra help me find a real lawyer?</item>
+        <item>How often is the legal information updated?</item>
+        <item>What if the app gives wrong advice?</item>
+        <item>How do I update my profile?</item>
+        <item>Can I change the app\'s theme?</item>
+        <item>How do I delete my account?</item>
+        <item>Who can I contact for help?</item>
+    </string-array>
+    <string-array name="faq_answers">
+        <item>Nyay Mitra is a mobile app that uses AI to help you understand legal documents, your rights, and get basic legal assistance in simple language.</item>
+        <item>Just take a photo of the document using the app\'s camera feature (in the AI Assistant tab). The app uses technology to read the text and explains it to you.</item>
+        <item>Nyay Mitra aims to support multiple regional Indian languages. You can select your preferred language in Settings.</item>
+        <item>No, the AI provides information and explains concepts based on legal data. It\'s a helpful guide, but not a substitute for advice from a qualified human lawyer for complex cases.</item>
+        <item>The AI can help you draft basic replies or complaints based on your situation, but it cannot create complex legal documents like contracts or wills.</item>
+        <item>The AI uses reliable legal databases, but laws can change. Always double-check critical information with official sources or a lawyer. The app provides information, not legal advice.</item>
+        <item>Yes, we take privacy seriously. Your scanned documents and chats are processed securely. Please review our Privacy Policy in Settings for details.</item>
+        <item>Yes, an internet connection is needed for the AI chat, document analysis, and fetching updated information.</item>
+        <item>Currently, Nyay Mitra offers basic features for free. Advanced features might be introduced later.</item>
+        <item>Go to the Dictionary tab. You can browse common legal terms or search for specific words to get simple explanations.</item>
+        <item>Yes, in the AI Assistant tab, besides using the camera, you can choose to upload an image of a document from your phone\'s gallery.</item>
+        <item>You can scan notices, letters, FIR copies, agreements, etc. The app works best with clear, printed text.</item>
+        <item>Yes, the AI is trained to understand and explain many legal terms in simple words.</item>
+        <item>The app currently focuses on providing information. The "Connect" section might help you find legal aid resources in the future.</item>
+        <item>We strive to keep the information up-to-date, but legal changes happen. Use the app as a starting point, not the final word.</item>
+        <item>Nyay Mitra provides information for educational purposes. It cannot be held responsible for actions taken based solely on its suggestions. Consult a lawyer for critical matters.</item>
+        <item>Click the menu icon (three lines), select your profile, then choose "Update Profile" to change details like gender, age, etc.</item>
+        <item>Yes! Go to the main Profile screen (via the side menu), select "Theme", and choose between Light, Dark, or System Default.</item>
+        <item>In the main Profile screen, select "Settings". You will find an option to request account deletion there. Please note this is usually irreversible.</item>
+        <item>Go to the main Profile screen and select "Help". You\'ll find troubleshooting tips and contact information for support.</item>
+    </string-array>
+
+    <string name="help_getting_started_title">Getting Started</string>
+    <string name="help_getting_started_content"><![CDATA[Welcome to Nyay Mitra! Sign up or log in. Use the bottom tabs to navigate: Home, Chat (Laws info), Connect, Dictionary, and AI Assistant (chat & scan). Use the side menu (top-left) for profile & settings.]]></string>
+    <string name="help_scanning_title">Document Scanning</string>
+    <string name="help_scanning_content"><![CDATA[Go to the AI Assistant tab. Tap the camera icon. Grant camera permission if asked. Point your camera at the document and tap \'Scan Text\'. The app will read the text. You can then ask the AI to explain or summarize it. You can also upload images from your gallery. Ensure good lighting and clear text.]]></string>
+    <string name="help_dictionary_title">Legal Dictionary</string>
+    <string name="help_dictionary_content"><![CDATA[Tap the Dictionary tab. Choose \'For Lawyers\' or \'For Clients\' to see relevant legal terms explained simply. Use the search bar (if available) to find specific terms quickly.]]></string>
+    <string name="help_ai_doubts_title">Asking AI Doubts</string>
+    <string name="help_ai_doubts_content"><![CDATA[Go to the AI Assistant tab. Type your legal question in the message box and tap send. The AI will provide information. Remember, this is informational, not legal advice from a human lawyer.]]></string>
+    <string name="help_rights_title">User Rights Basics</string>
+    <string name="help_rights_content"><![CDATA[Nyay Mitra helps you understand fundamental rights (like equality, free speech) and consumer rights. Use the Chat (Laws) or AI Assistant for specific questions. For detailed info, check reliable government sources.]]></string>
+    <string name="help_account_title">Account Settings</string>
+    <string name="help_account_content"><![CDATA[Open the side menu (top-left icon), tap your profile. Select \'Update Profile\' to change personal details. Select \'Settings\' for language, privacy, 2FA, or account deletion.]]></string>
+    <string name="help_privacy_title">Privacy</string>
+    <string name="help_privacy_content"><![CDATA[We value your privacy. Your data is handled securely. You can review our full Privacy Policy in the Settings section. Account deletion permanently removes your data as per policy.]]></string>
+    <string name="help_troubleshooting_title">Troubleshooting</string>
+    <string name="help_troubleshooting_content"><![CDATA[<b>App Crash/Slow:</b> Ensure good internet connection. Restart the app. Check for app updates in the Play Store. Clear app cache via phone settings if needed.<br><b>Scan Fails:</b> Ensure clear document, good lighting, steady hand. Try again.<br><b>AI Response Slow/Error:</b> Check internet. Wait a moment and retry.]]></string>
+    <string name="help_contact_title">Contact Support</string>
+    <string name="help_contact_content"><![CDATA[If you need further help, please email us at: support@nyaymitra.example.com (replace with actual email). Provide details about your issue.]]></string>
+
+    <string name="setting_language">App Language</string>
+    <string name="setting_privacy">Privacy Policy</string>
+    <string name="setting_2fa">Two-Factor Authentication</string>
+    <string name="setting_2fa_summary">Requires verification code when logging in</string>
+    <string name="setting_delete_account">Delete Account</string>
+    <string name="setting_delete_confirm_title">Delete Account?</string>
+    <string name="setting_delete_confirm_message">This action is permanent and cannot be undone. All your data will be removed.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string-array name="languages">
+        <item>English</item>
+        <item>Hindi</item>
+    </string-array>
+
+</resources>

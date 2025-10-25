@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome!"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please select your role to continue."
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgSelectRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rbSelectUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User (Client)"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbSelectLawyer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lawyer"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnConfirmRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Confirm and Continue"/>
+
+</LinearLayout>
