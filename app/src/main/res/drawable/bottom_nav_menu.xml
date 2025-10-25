@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/nav_laws"
+        android:icon="@drawable/ic_laws"
+        android:title="Laws" />
+
+    <item
+        android:id="@+id/nav_communication"
+        android:icon="@drawable/ic_communication"
+        android:title="Connect" />
+
+    <item
+        android:id="@+id/nav_dictionary"
+        android:icon="@drawable/ic_dictionary"
+        android:title="Dictionary" />
+
+    <item
+        android:id="@+id/nav_ai_assistant"
+        android:icon="@drawable/ic_ai_assistant"
+        android:title="AI Assistant" />
+
+</menu>

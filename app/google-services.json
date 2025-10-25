@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "428501456649",
+    "project_id": "nyay-mitra-auth",
+    "storage_bucket": "nyay-mitra-auth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428501456649:android:0ff106d72d54e96f6e65d8",
+        "android_client_info": {
+          "package_name": "com.hackathon.nyaymitra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428501456649-7j60lt216b4gefamm89tgf0km91hm9pr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hackathon.nyaymitra",
+            "certificate_hash": "6e36eae133f5afcddcad83fc6f83f586067247ba"
+          }
+        },
+        {
+          "client_id": "428501456649-91sn9vco7i25d60dtveoiqtr7a2250ld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4-rDkRlh_ayYlsmEkF4ugm8tgDtN3X4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428501456649-91sn9vco7i25d60dtveoiqtr7a2250ld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
