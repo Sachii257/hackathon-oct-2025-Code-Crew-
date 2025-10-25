@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#f5f5f5">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,17 @@
             android:src="@drawable/ic_scan"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Scan Document"/>
+
+        <ImageButton
+            android:id="@+id/btn_clear_chat"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_toEndOf="@id/btn_scan"
+            android:layout_centerVertical="true"
+            android:contentDescription="Clear Chat"
+            app:tint="?android:attr/textColorSecondary" />
 
         <EditText
             android:id="@+id/edit_text_message"

@@ -2,6 +2,8 @@ package com.hackathon.nyaymitra;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -11,17 +13,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,8 +34,16 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.hackathon.nyaymitra.activities.MainActivity;
 import com.hackathon.nyaymitra.activities.SelectRoleActivity;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -47,17 +51,22 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvUsernameError, tvRoleError, tvToggle;
     private RadioGroup rgRole;
     private Button btnSignIn;
-
-    // --- NEW: Firebase, Google & Volley ---
     private SignInButton btnGoogleSignIn;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
-    private RequestQueue requestQueue;
 
     private static final String TAG = "LoginActivity";
-    // IMPORTANT: Change this to your Flask server's URL
-    private static final String BACKEND_URL = "http://10.92.184.135:5000/api/user/login-or-register";
+
+    // --- Executor and Handler for background tasks ---
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    // --- SET YOUR FLASK URL HERE ---
+    // Use "http://10.0.2.2:5000" for emulator
+    // Use "http://YOUR_WIFI_IP:5000" for physical phone (e.g., "http://192.168.1.5:5000")
+    private static final String BACKEND_URL = "https://a0b4be4631c8.ngrok-free.app/api/user/login-or-register";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +81,12 @@ public class LoginActivity extends AppCompatActivity {
         rgRole = findViewById(R.id.rgRole);
         btnSignIn = findViewById(R.id.btnSignIn);
         tvToggle = findViewById(R.id.tvToggle);
-        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn); // From activity_login.xml
+        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
 
-        // --- NEW: Initialize Firebase, Google, Volley ---
+        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
-        requestQueue = Volley.newRequestQueue(this);
 
+        // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -126,7 +135,6 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
 
-                        // --- NEW: Check if user is new ---
                         AuthResult authResult = task.getResult();
                         boolean isNewUser = authResult.getAdditionalUserInfo().isNewUser();
 
@@ -135,10 +143,10 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(this, "Welcome! Please select your role.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, SelectRoleActivity.class);
                             startActivity(intent);
-                            finish(); // Finish LoginActivity
+                            finish();
                         } else {
                             // EXISTING USER: Call backend to update token and get role
-                            callBackendLogin(user, null); // Pass null for role, backend will retrieve it
+                            callBackendLogin(user, null);
                         }
                     } else {
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -152,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
     private void validateAndSignIn() {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        int selectedRoleId = rgRole.getCheckedRadioButtonId();
 
         tvUsernameError.setVisibility(View.GONE);
         tvRoleError.setVisibility(View.GONE);
@@ -168,29 +175,14 @@ public class LoginActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        // Role is NOT needed for login, only for sign-up.
-        // We will fetch the role from our backend.
-        // We can remove the role check from login.
-        /*
-        if (selectedRoleId == -1) {
-            tvRoleError.setText("Please select a role (User or Lawyer)");
-            tvRoleError.setVisibility(View.VISIBLE);
-            isValid = false;
-        }
-        */
-
         if (isValid) {
-            // --- NEW: Sign in with Firebase ---
             mAuth.signInWithEmailAndPassword(username, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            // Sign in success
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            // Call backend to update token and get role
-                            callBackendLogin(user, null); // Pass null for role
+                            callBackendLogin(user, null);
                         } else {
-                            // If sign in fails
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
@@ -198,70 +190,106 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // --- NEW: Common Backend Call Function ---
     /**
-     * Calls the Flask backend after a successful Firebase login.
+     * Calls the Flask backend using HttpURLConnection on a background thread.
      * @param user The FirebaseUser who just logged in.
-     * @param role The user's role (ONLY provided on email sign-up, otherwise null).
+     * @param role The user's role (null for login, "client" or "lawyer" for signup).
      */
     private void callBackendLogin(FirebaseUser user, @Nullable String role) {
         String email = user.getEmail();
 
-        // 1. Get FCM Token
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                Toast.makeText(this, "Login successful, but failed to update device token.", Toast.LENGTH_SHORT).show();
-                // Still go to main, but backend call failed
+        // 1. Get FCM Token first (this is also async)
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(tokenTask -> {
+            if (!tokenTask.isSuccessful()) {
+                Log.w(TAG, "Fetching FCM registration token failed", tokenTask.getException());
+                postToast("Login successful, but failed to update device token.");
                 navigateToMain();
                 return;
             }
-            String fcmToken = task.getResult();
+            String fcmToken = tokenTask.getResult();
 
-            // 2. Create JSON Payload
-            JSONObject payload = new JSONObject();
-            try {
-                payload.put("email", email);
-                payload.put("fcm_token", fcmToken);
-                if (role != null) {
-                    // This is for a new user registration (from SignUpActivity)
-                    payload.put("role", role);
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, "JSON Exception: " + e.getMessage());
-                navigateToMain(); // Fail gracefully
-                return;
-            }
+            // 2. Run the network request on a background thread
+            executor.execute(() -> {
+                HttpURLConnection connection = null;
+                String responseMessage = "Google Login successful."; // Default message
 
-            // 3. Send to Flask Backend
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, BACKEND_URL, payload,
-                    response -> {
-                        // Backend call was successful
-                        try {
-                            String message = response.getString("message");
-                            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-                            // 4. Navigate to Main Activity
-                            navigateToMain();
-                        } catch (JSONException e) {
-                            Log.e(TAG, "Backend JSON response error: " + e.getMessage());
-                            navigateToMain(); // Fail gracefully
+                try {
+                    // 3. Create JSON Payload
+                    JSONObject payload = new JSONObject();
+                    payload.put("email", email);
+                    payload.put("fcm_token", fcmToken);
+                    if (role != null) {
+                        payload.put("role", role);
+                    }
+                    String jsonPayload = payload.toString();
+
+                    // 4. Setup Connection
+                    URL url = new URL(BACKEND_URL);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/json; utf-8");
+                    connection.setRequestProperty("Accept", "application/json");
+                    connection.setRequestProperty("ngrok-skip-browser-warning", "true");
+                    connection.setDoOutput(true);
+                    connection.setConnectTimeout(10000); // 10 seconds
+                    connection.setReadTimeout(10000); // 10 seconds
+
+                    // 5. Write Data
+                    try (OutputStream os = connection.getOutputStream()) {
+                        byte[] input = jsonPayload.getBytes(StandardCharsets.UTF_8);
+                        os.write(input, 0, input.length);
+                    }
+
+                    // 6. Read Response
+                    int responseCode = connection.getResponseCode();
+                    Log.d(TAG, "POST Response Code :: " + responseCode);
+
+                    if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
+                        // Read success response
+                        try (BufferedReader br = new BufferedReader(
+                                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                            StringBuilder response = new StringBuilder();
+                            String responseLine;
+                            while ((responseLine = br.readLine()) != null) {
+                                response.append(responseLine.trim());
+                            }
+                            // Parse the message from the server's JSON response
+                            JSONObject jsonResponse = new JSONObject(response.toString());
+                            responseMessage = jsonResponse.getString("message");
                         }
-                    },
-                    error -> {
-                        // Backend call failed
-                        Log.e(TAG, "Volley Error: " + error.toString());
-                        Toast.makeText(this, "Google Login successful", Toast.LENGTH_SHORT).show();
-                        navigateToMain(); // Fail gracefully
-                    });
+                    } else {
+                        Log.e(TAG, "Backend Error: " + responseCode);
+                    }
 
-            requestQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    Log.e(TAG, "HttpURLConnection Failure: " + e.getMessage());
+                    responseMessage = "Network error. Please try again.";
+
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+
+                    // 7. Post result back to UI thread and navigate
+                    postToast(responseMessage);
+                    navigateToMain();
+                }
+            });
         });
     }
 
+    // Helper method to show a Toast from any thread
+    private void postToast(String message) {
+        handler.post(() -> Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show());
+    }
+
     private void navigateToMain() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish(); // Close the LoginActivity
+        // Make sure navigation also happens on the UI thread
+        handler.post(() -> {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 }

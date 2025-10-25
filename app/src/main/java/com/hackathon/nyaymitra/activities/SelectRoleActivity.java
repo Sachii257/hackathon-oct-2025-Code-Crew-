@@ -2,6 +2,8 @@ package com.hackathon.nyaymitra.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioGroup;
@@ -9,29 +11,37 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.hackathon.nyaymitra.LoginActivity;
 import com.hackathon.nyaymitra.R;
-import com.hackathon.nyaymitra.activities.MainActivity;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SelectRoleActivity extends AppCompatActivity {
 
     private RadioGroup rgSelectRole;
     private Button btnConfirmRole;
     private FirebaseAuth mAuth;
-    private RequestQueue requestQueue;
+
+    // --- Executor and Handler for background tasks ---
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     private static final String TAG = "SelectRoleActivity";
-    // IMPORTANT: Change this to your Flask server's URL
-    private static final String BACKEND_URL = "http://10.92.184.135:5000/api/user/login-or-register";
+    // --- SET YOUR FLASK URL HERE ---
+    private static final String BACKEND_URL = "https://a0b4be4631c8.ngrok-free.app/api/user/login-or-register";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +51,6 @@ public class SelectRoleActivity extends AppCompatActivity {
         rgSelectRole = findViewById(R.id.rgSelectRole);
         btnConfirmRole = findViewById(R.id.btnConfirmRole);
         mAuth = FirebaseAuth.getInstance();
-        requestQueue = Volley.newRequestQueue(this);
 
         btnConfirmRole.setOnClickListener(v -> {
             FirebaseUser user = mAuth.getCurrentUser();
@@ -55,57 +64,87 @@ public class SelectRoleActivity extends AppCompatActivity {
     }
 
     private void registerNewUserInBackend(FirebaseUser user) {
+        // Assuming you have IDs R.id.rbSelectLawyer and R.id.rbSelectUser
         String selectedRole = (rgSelectRole.getCheckedRadioButtonId() == R.id.rbSelectLawyer) ? "lawyer" : "client";
         String email = user.getEmail();
 
-        // 1. Get FCM Token
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                Toast.makeText(this, "Failed to get device token. Cannot register.", Toast.LENGTH_SHORT).show();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(tokenTask -> {
+            if (!tokenTask.isSuccessful()) {
+                Log.w(TAG, "Fetching FCM registration token failed", tokenTask.getException());
+                postToast("Failed to get device token. Cannot register.");
                 return;
             }
-            String fcmToken = task.getResult();
+            String fcmToken = tokenTask.getResult();
 
-            // 2. Create JSON Payload
-            JSONObject payload = new JSONObject();
-            try {
-                payload.put("email", email);
-                payload.put("fcm_token", fcmToken);
-                payload.put("role", selectedRole); // Role is required for new user
-            } catch (JSONException e) {
-                Log.e(TAG, "JSON Exception: " + e.getMessage());
-                return;
-            }
+            executor.execute(() -> {
+                HttpURLConnection connection = null;
+                boolean registrationSuccess = false;
+                String responseMessage = "Server registration failed.";
 
-            // 3. Send to Flask Backend
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, BACKEND_URL, payload,
-                    response -> {
-                        // Backend call was successful
-                        try {
-                            String message = response.getString("message");
-                            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                try {
+                    JSONObject payload = new JSONObject();
+                    payload.put("email", email);
+                    payload.put("fcm_token", fcmToken);
+                    payload.put("role", selectedRole);
+                    String jsonPayload = payload.toString();
 
-                            // 4. Navigate to Main Activity
-                            navigateToMain();
-                        } catch (JSONException e) {
-                            Log.e(TAG, "Backend JSON response error: " + e.getMessage());
+                    URL url = new URL(BACKEND_URL);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/json; utf-8");
+                    connection.setRequestProperty("ngrok-skip-browser-warning", "true");
+                    connection.setDoOutput(true);
+
+                    try (OutputStream os = connection.getOutputStream()) {
+                        os.write(jsonPayload.getBytes(StandardCharsets.UTF_8));
+                    }
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
+                        registrationSuccess = true;
+                        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                            JSONObject jsonResponse = new JSONObject(br.readLine());
+                            responseMessage = jsonResponse.getString("message");
                         }
-                    },
-                    error -> {
-                        // Backend call failed
-                        Log.e(TAG, "Volley Error: " + error.toString());
-                        Toast.makeText(this, "Server registration failed.", Toast.LENGTH_SHORT).show();
-                    });
+                    } else {
+                        Log.e(TAG, "Backend Error: " + responseCode);
+                    }
 
-            requestQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    Log.e(TAG, "HttpURLConnection Failure: " + e.getMessage());
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+
+                    postToast(responseMessage);
+                    if (registrationSuccess) {
+                        navigateToMain();
+                    } else {
+                        // If registration fails, sign out and send back to Login
+                        handler.post(() -> {
+                            mAuth.signOut();
+                            Intent intent = new Intent(SelectRoleActivity.this, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        });
+                    }
+                }
+            });
         });
     }
 
     private void navigateToMain() {
-        Intent intent = new Intent(SelectRoleActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+        handler.post(() -> {
+            Intent intent = new Intent(SelectRoleActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void postToast(String message) {
+        handler.post(() -> Toast.makeText(SelectRoleActivity.this, message, Toast.LENGTH_LONG).show());
     }
 }
