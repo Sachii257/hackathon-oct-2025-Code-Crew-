@@ -5,4 +5,3 @@ google-genai
 firebase-admin
 psycopg2-binary
 gunicorn
-json
