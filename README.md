@@ -4,6 +4,8 @@
 
 ⭐ [Click here to view the documentation](https://1drv.ms/b/c/8557a44f0fe4c4ed/EXTepreCNepPrzznxbxW098ByzMjyYJz44_AVohzWiSwcg?e=CemLq5)
 
+⭐ [Click here to view the Presentation](https://1drv.ms/p/c/8557a44f0fe4c4ed/EXCXqkcObNxMlJ0h3fN1TZUBHQVbyLQx7lHAVSXZvFaqNg?e=SmMGBI)
+
 ----
 
 # PROBLEM STATEMENT
