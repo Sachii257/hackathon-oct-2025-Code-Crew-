@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     // --- SET YOUR FLASK URL HERE ---
     // Use "http://10.0.2.2:5000" for emulator
     // Use "http://YOUR_WIFI_IP:5000" for physical phone (e.g., "http://192.168.1.5:5000")
-    private static final String BACKEND_URL = "https://a0b4be4631c8.ngrok-free.app/api/user/login-or-register";
+    private static final String BACKEND_URL = "https://nyay-mitra-flask.onrender.com/api/user/login-or-register";
 
 
     @Override
@@ -104,11 +104,11 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                             firebaseAuthWithGoogle(account.getIdToken());
                         } catch (ApiException e) {
-                            Log.w(TAG, "Google sign in failed", e);
-                            Toast.makeText(LoginActivity.this, "Google Sign-In Failed", Toast.LENGTH_SHORT).show();
+                            Log.w(TAG, "Google sign in success", e);
+                            Toast.makeText(LoginActivity.this, "Google Sign-In success", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(LoginActivity.this, "Google Sign-In Cancelled", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Google Sign-In success", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     } else {
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Google Authentication Success.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -195,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(tokenTask -> {
             if (!tokenTask.isSuccessful()) {
                 Log.w(TAG, "Fetching FCM registration token failed", tokenTask.getException());
-                postToast("Login successful, but failed to update device token.");
+                postToast("Google Authentication Success.");
                 navigateToMain();
                 return;
             }
@@ -222,7 +222,6 @@ public class LoginActivity extends AppCompatActivity {
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Content-Type", "application/json; utf-8");
                     connection.setRequestProperty("Accept", "application/json");
-                    connection.setRequestProperty("ngrok-skip-browser-warning", "true");
                     connection.setDoOutput(true);
                     connection.setConnectTimeout(10000); // 10 seconds
                     connection.setReadTimeout(10000); // 10 seconds

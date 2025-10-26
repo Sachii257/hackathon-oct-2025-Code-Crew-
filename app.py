@@ -21,17 +21,15 @@ CORS(app)  # Allow cross-origin requests
 
 # --- CRITICAL SECURITY FIX ---
 # Load ALL secrets from environment variables
-GEMINI_API_KEY = 'AIzaSyCR3hEwynBgrMH-mcLvn4DuaGC1R_Y9_A8' # os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 if not GEMINI_API_KEY:
     raise ValueError("GEMINI_API_KEY environment variable not set.")
 
-FIREBASE_SDK_PATH = os.getenv("FIREBASE_SDK_PATH", 'serviceAccountKey.json')
-
 # --- PostgreSQL Connection Details ---
-DB_NAME = 'nyay_mitra_database'
-DB_USER = 'nyay_mitra_database_user'
-DB_PASS = 'RtmYkQkavY4UhiaGFy1CMPKqEHTX3Hys'
-DB_HOST = 'dpg-d3u7jrn5r7bs73fagskg-a.singapore-postgres.render.com'
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+DB_HOST = os.getenv("DB_HOST")
 DB_PORT = '5432'
 
 if not all([DB_NAME, DB_USER, DB_PASS, DB_HOST]):
@@ -53,17 +51,22 @@ SYSTEM_INSTRUCTION = (
 )
 
 model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash-latest", # Updated to a more current model
+    model_name="gemini-2.5-flash", # Updated to a more current model
     system_instruction=SYSTEM_INSTRUCTION
 )
 # ----------------------------------
 
 # --- Firebase Admin SDK Initialization ---
 try:
-    if not os.path.exists(FIREBASE_SDK_PATH):
-        print(f"Firebase service account key not found at: {FIREBASE_SDK_PATH}", file=sys.stderr)
+    # CRITICAL CHANGE: Read the content from a Secret Environment Variable
+    FIREBASE_CREDENTIALS_JSON = os.getenv("FIREBASE_CREDENTIALS_JSON")
+
+    if not FIREBASE_CREDENTIALS_JSON:
+        print("Firebase credentials not found in environment variable.", file=sys.stderr)
     else:
-        cred = credentials.Certificate(FIREBASE_SDK_PATH)
+        # Use credentials.Certificate with the JSON content
+        import json
+        cred = credentials.Certificate(json.loads(FIREBASE_CREDENTIALS_JSON))
         firebase_admin.initialize_app(cred)
         print("Firebase Admin SDK initialized.")
 except Exception as e:

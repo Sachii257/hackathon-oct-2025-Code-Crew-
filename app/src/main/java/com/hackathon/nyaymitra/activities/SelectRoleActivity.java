@@ -40,7 +40,7 @@ public class SelectRoleActivity extends AppCompatActivity {
 
     private static final String TAG = "SelectRoleActivity";
     // --- SET YOUR FLASK URL HERE ---
-    private static final String BACKEND_URL = "https://a0b4be4631c8.ngrok-free.app/api/user/login-or-register";
+    private static final String BACKEND_URL = "https://nyay-mitra-flask.onrender.com/api/user/login-or-register";
 
 
     @Override
@@ -92,7 +92,6 @@ public class SelectRoleActivity extends AppCompatActivity {
                     connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
                     connection.setRequestProperty("Content-Type", "application/json; utf-8");
-                    connection.setRequestProperty("ngrok-skip-browser-warning", "true");
                     connection.setDoOutput(true);
 
                     try (OutputStream os = connection.getOutputStream()) {
