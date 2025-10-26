@@ -10,7 +10,7 @@ public class ApiClient {
     // --- IMPORTANT ---
     // Make sure this URL matches your ngrok or server address
     // It must end with a "/"
-    private static final String BASE_URL = "https://a0b4be4631c8.ngrok-free.app/";
+    private static final String BASE_URL = "https://nyay-mitra-flask.onrender.com/";
 
     private static Retrofit retrofit = null;
 
